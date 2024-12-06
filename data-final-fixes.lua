@@ -18,16 +18,14 @@ for _, recipe in pairs(data.raw.recipe) do
       -- Modify result to maintain ratio by adjusting probability
       for _, result in ipairs(recipe.results or {}) do
         -- Check if result has amount and reduce it by the factor while setting probability
-        if result.amount and result.amount >= 1 then
-          result.probability = (result.amount / factor)
-          result.amount = 1
+        if result.amount then
+          result.probability = (result.probability or 1) / factor       
         end
       end
 
       -- Handle cases where the recipe uses `result` instead of `results`
-      if recipe.result and recipe.result_count and recipe.result_count > 1 then
-        recipe.result_count = 1
-        recipe.result_probability = 1 / factor
+      if recipe.result and recipe.result_count then
+        recipe.result_probability = (recipe.result_probability or 1) / factor
       end
   end
 end
